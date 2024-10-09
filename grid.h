@@ -26,10 +26,12 @@ class Node{
 };
 
 class Grid{
+    
     Node* head;
     int rows;
     int cols;
     public:
+
     Grid(int r , int c);
     void initializeGrid();
     void insert(int x, int y , char v);

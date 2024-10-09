@@ -4,7 +4,7 @@ Grid::Grid(int r , int c){
     rows = r;
     cols = c;
     head = NULL;
-    initializeGrid();
+    //initializeGrid();
 }
 void Grid::initializeGrid(){
     for(int i = 0 ; i<rows;i++){
