@@ -2,13 +2,13 @@
 #include<utility>
 using namespace std;
 
-    Player::Player(int x , int y , int undos){
+    Player::Player(int x , int y , int moves){
             this->x = x;
             this->y = y;
-            this->undos = undos;
+            this->moves = moves;
             this->hasKey = false;
             label = 'P';
-            moveHistory.push(x, y);
+            //moveHistory.push(x, y);
     }
 
     int Player::getX(){
@@ -47,9 +47,11 @@ using namespace std;
 
             if(newX != lastMove.first || newY != lastMove.second){
                 grid.setValue(x , y , '.');
+                grid.setLabel(x,y,'.');
                 moveHistory.push(x,y);
                 x = newX;
                 y = newY;
+                moves--;
 
                 char currentCell = grid.getValue(x , y);
                 if(currentCell == 'K'){
@@ -61,6 +63,7 @@ using namespace std;
                     grid.setValue(x , y , '.');
                 }
                 grid.setValue(x, y ,label);
+                grid.setLabel(x,y,label);
                 return true;
             }else{
                 cout<<"\n--Invalid Move--\n";
@@ -75,10 +78,12 @@ using namespace std;
     bool Player::undoMove(Grid& grid){
         if(undos>0 && !moveHistory.isEmpty()){
             grid.setValue(x , y , '.');
+            grid.setLabel(x,y,'.');
             x = moveHistory.peek().first;
             y = moveHistory.peek().second;
             moveHistory.pop();
             grid.setValue(x , y , label);
+            grid.setLabel(x,y,label);
             undos--;
             return true;
         }

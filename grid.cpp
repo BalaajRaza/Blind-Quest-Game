@@ -1,4 +1,6 @@
 #include "grid.h"
+#include <ctime>
+#include <cstdlib>
 
 Grid::Grid(int r , int c){
     rows = r;
@@ -7,20 +9,42 @@ Grid::Grid(int r , int c){
     //initializeGrid();
 }
 void Grid::initializeGrid(){
+    srand(time(0));
     for(int i = 0 ; i<rows;i++){
         for(int j = 0;j<cols;j++){
             if(i==0 || j==0 || i==rows-1 || j==cols-1){
-                insert(i , j , '#');
+                insert(i , j , '#' , '#');
             }
             else{
-                insert(i , j , '.');
+                insert(i , j , '.' , '.');
             }
         }
-}
+    }
+    for(int i=0;i<3;i++){
+        placeItems('C');
+    }
+
+    for(int i=0;i<2;i++){
+        placeItems('B');
+    }
+    placeItems('K');
+    placeItems('D');
+    
 }
 
-void Grid::insert(int x , int y ,char v){
-    Node* newNode = new Node(v,x,y);
+void Grid::placeItems(char label){
+    int x;
+    int y;
+    do{
+        x = rand()%(rows - 2) + 1;
+        y = rand()%(cols - 2) + 1;
+    }while(getValue(x , y) != '.');
+
+    setValue(x,y,label);
+}
+
+void Grid::insert(int x , int y ,char v , char l){
+    Node* newNode = new Node(v,l,x,y);
     if(!head){
         head = newNode;
     }
@@ -28,6 +52,7 @@ void Grid::insert(int x , int y ,char v){
         Node* current = getNode(x,y);
         if (current){
             current->val = v;
+            current->label = l;
             delete newNode;
             return;
         }
@@ -66,6 +91,18 @@ void Grid::setValue(int x , int y , char val){
     }
 }
 
+char Grid::getLabel(int x , int y){
+    Node* current = getNode(x,y);
+    return current ? current->label : ' ';
+}
+
+void Grid::setLabel(int x , int y , char l){
+    Node* current = getNode(x , y);
+    if(current){
+        current->label = l;
+    }
+}
+
 Node* Grid::getNode(int x , int y){
     if (x < 0 || x >= rows || y < 0 || y >= cols) {
         return NULL;
@@ -96,4 +133,12 @@ void Grid::display(){
         }
         cout<<endl;
     }
+}
+
+int Grid::getRows(){
+    return rows;
+}
+
+int Grid::getCols(){
+    return cols;
 }

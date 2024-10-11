@@ -63,17 +63,22 @@ class Player{
     int x;
     int y;
     int undos;
+    int moves;
     bool hasKey;
     char label;
     stack moveHistory;
 
     public:
-    Player(int x , int y, int undos);
+    Player(int x , int y, int moves);
     int getX();
     int getY();
     bool haveKey();
     bool move(Grid& grid , char direction);
     bool undoMove(Grid& grid);
+    void setUndos(int u){undos = u;}
+    int getUndos(){return undos;}
+    void setMoves(int moves) {this->moves = moves;}
+    int getMoves(){return moves;}
 
     
 };
