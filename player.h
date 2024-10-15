@@ -64,12 +64,14 @@ class Player{
     int y;
     int undos;
     int moves;
+    int score;
     bool hasKey;
     char label;
     stack moveHistory;
+    Grid initialGrid;
 
     public:
-    Player(int x , int y, int moves);
+    Player(int x , int y, int moves , const Grid& grid);
     int getX();
     int getY();
     bool haveKey();
@@ -79,6 +81,9 @@ class Player{
     int getUndos(){return undos;}
     void setMoves(int moves) {this->moves = moves;}
     int getMoves(){return moves;}
+    void gameOver(string reason);
+    void gameWin();
+    int getScore(){return score;}
 
     
 };

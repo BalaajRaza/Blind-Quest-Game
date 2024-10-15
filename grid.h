@@ -32,20 +32,24 @@ class Grid{
     Node* head;
     int rows;
     int cols;
+    void copyGrid(const Grid& other);
     public:
 
     Grid(int r , int c);
+    ~Grid();
+    Grid(const Grid& other);
     void initializeGrid();
     void placeItems(char label); 
     void insert(int x, int y , char v , char l);
-    char getValue(int x, int y);
+    char getValue(int x, int y)const;
     void setValue(int x, int y , char v);
-    char getLabel(int x, int y);
-    void setLabel(int x, int y , char l);
-    Node* getNode(int x, int y);
-    void display();
-    int getRows();
-    int getCols();
+    char getLabel(int x, int y)const;
+    void setLabel(int x, int y , char l)const;
+    Node* getNode(int x, int y)const;
+    void displayLabels()const;
+    void displayValues()const;
+    int getRows()const;
+    int getCols()const;
 
 
 };
