@@ -2,12 +2,37 @@
 #include <ctime>
 #include <cstdlib>
 
-Grid::Grid(int r , int c){
-    rows = r;
-    cols = c;
-    head = NULL;
-    //initializeGrid();
+Grid::Grid(int r , int c):rows(r) , cols(c) , head(NULL){}
+
+Grid::~Grid() {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            Node* current = getNode(i, j);
+            if (current) {
+            delete current;
+            }
+        }
+    }
 }
+
+Grid::Grid(const Grid& other) : rows(other.rows), cols(other.cols), head(NULL) {
+    copyGrid(other);
+}
+
+void Grid::copyGrid(const Grid& other){
+    if(other.head){
+        for(int i=0; i<rows;i++){
+            for(int j=0;j<cols;j++){
+                Node* current = other.getNode(i, j);
+                if(current){
+                    insert(i,j,current->val,current->label);
+                }
+            }
+        }
+    }
+
+}
+
 void Grid::initializeGrid(){
     srand(time(0));
     for(int i = 0 ; i<rows;i++){
@@ -42,6 +67,7 @@ void Grid::placeItems(char label){
 
     setValue(x,y,label);
 }
+
 
 void Grid::insert(int x , int y ,char v , char l){
     Node* newNode = new Node(v,l,x,y);
@@ -79,7 +105,7 @@ void Grid::insert(int x , int y ,char v , char l){
     }
 }
 
-char Grid::getValue(int x , int y){
+char Grid::getValue(int x , int y)const{
     Node* current = getNode(x,y);
     return current ? current->val : ' ';
 }
@@ -91,19 +117,19 @@ void Grid::setValue(int x , int y , char val){
     }
 }
 
-char Grid::getLabel(int x , int y){
+char Grid::getLabel(int x , int y)const{
     Node* current = getNode(x,y);
     return current ? current->label : ' ';
 }
 
-void Grid::setLabel(int x , int y , char l){
+void Grid::setLabel(int x , int y , char l)const{
     Node* current = getNode(x , y);
     if(current){
         current->label = l;
     }
 }
 
-Node* Grid::getNode(int x , int y){
+Node* Grid::getNode(int x , int y)const{
     if (x < 0 || x >= rows || y < 0 || y >= cols) {
         return NULL;
     }
@@ -126,7 +152,16 @@ Node* Grid::getNode(int x , int y){
     return NULL;
 }
 
-void Grid::display(){
+void Grid::displayLabels()const{
+    for(int i=0;i<rows;i++){
+        for(int j=0;j<cols;j++){
+            cout<<getLabel(i,j)<<" ";
+        }
+        cout<<endl;
+    }
+}
+
+void Grid::displayValues()const{
     for(int i=0;i<rows;i++){
         for(int j=0;j<cols;j++){
             cout<<getValue(i,j)<<" ";
@@ -135,10 +170,10 @@ void Grid::display(){
     }
 }
 
-int Grid::getRows(){
+int Grid::getRows()const{
     return rows;
 }
 
-int Grid::getCols(){
+int Grid::getCols()const{
     return cols;
 }

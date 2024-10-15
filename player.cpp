@@ -2,13 +2,13 @@
 #include<utility>
 using namespace std;
 
-    Player::Player(int x , int y , int moves){
+    Player::Player(int x , int y , int moves ,const Grid& grid): initialGrid(grid){
             this->x = x;
             this->y = y;
             this->moves = moves;
             this->hasKey = false;
             label = 'P';
-            //moveHistory.push(x, y);
+            score = 0;
     }
 
     int Player::getX(){
@@ -24,6 +24,9 @@ using namespace std;
     }
 
     bool Player::move(Grid& grid , char direction){
+        if(moves <= 0){
+            gameOver("You are out of moves LOL xD");
+        }
         int newX = x;
         int newY = y;
         if(direction == 'w' || direction == 'W')
@@ -38,20 +41,18 @@ using namespace std;
         return undoMove(grid);
 
         if(grid.getValue(newX , newY) != '#'){
-
-            /*pair<int,int>*/ auto lastMove = moveHistory.peek();
-
-            // cout << "Current Position: (" << x << ", " << y << ")" << endl;
-            // cout << "Attempting to Move to: (" << newX << ", " << newY << ")" << endl;
-            // cout << "Last Move: (" << lastMove.first << ", " << lastMove.second << ")" << endl;
+            pair<int,int> lastMove = moveHistory.peek();
 
             if(newX != lastMove.first || newY != lastMove.second){
-                grid.setValue(x , y , '.');
+                if (grid.getValue(newX, newY) == 'D' && !hasKey){
+                    cout << "\n--The door is locked--\n";
+                    return true;
+                }
+
                 grid.setLabel(x,y,'.');
                 moveHistory.push(x,y);
                 x = newX;
                 y = newY;
-                moves--;
 
                 char currentCell = grid.getValue(x , y);
                 if(currentCell == 'K'){
@@ -59,18 +60,32 @@ using namespace std;
                     grid.setValue(x , y , '.');
                 }
                 else if(currentCell == 'C'){
+                    cout<<"\nYou gained and extra Undo\n";
+                    score+=2;
                     undos++;
                     grid.setValue(x , y , '.');
                 }
-                grid.setValue(x, y ,label);
+                else if(currentCell == 'B'){
+                    grid.setValue(x , y , '.');
+                    gameOver("You stepped on a bomb LOLxD");
+                    return false;
+                }
+                else if(currentCell == 'D'){
+                    if(hasKey){
+                        gameWin();
+                        return false;
+                    }
+                }
+
                 grid.setLabel(x,y,label);
+                moves--;
                 return true;
             }else{
                 cout<<"\n--Invalid Move--\n";
             }
         }
 
-        return false;
+        return true;
 
 
     }
@@ -90,4 +105,21 @@ using namespace std;
         cout<<"--Undo Not Possible(No Undos left or no Move history)--\n";
         return false;
 
+    }
+
+    void Player::gameOver(string reason){
+        cout<<"GameOver : "<<reason<<endl;
+        cout<<"Your Final Score : "<<score<<endl;
+        cout<<"\n| | | Initial Grid | | |\n";
+        initialGrid.displayValues();
+        exit(0);
+    }
+
+    void Player::gameWin(){
+        score+=moves;
+        cout<<"You Won!!\n";
+        cout<<"Your Final Score : "<<score<<endl;
+        cout<<"\n| | | Initial Grid | | |\n";
+        initialGrid.displayValues();
+        exit(0);
     }

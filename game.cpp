@@ -3,6 +3,7 @@
 #include "player.h"
 #include <ctime>
 #include <cstdlib>
+
 using namespace std;
 
 
@@ -65,46 +66,31 @@ class Game{
             exit(1);
         }
 
-        player = Player(player.getX() , player.getY() , totalMoves);
+        player = Player(player.getX() , player.getY() , totalMoves , grid);
         player.setUndos(undos);
     }
 
-    void gameOver(string reason){
-        cout<<"GameOver : "<<reason<<endl;
-        exit(0);
-    }
-
     public:
-    Game(int rows , int cols , string mode) : grid(rows , cols) , player(0,0,0){
+    Game(int rows , int cols , string mode) : grid(rows , cols)  , player(0,0,0 , grid){
         this->mode = mode;
         grid.initializeGrid();
         srand(time(0));
         int randomX = rand()%4+1;
         int randomY = rand()%4+1;
-        player = Player(randomX , randomY, 6);
         grid.setValue(randomX , randomY , 'P');
         grid.setLabel(randomX , randomY , 'P');
+        player = Player(randomX , randomY, 0 , grid);
         setPlayerMovesandUndos();
         while(true){
-            cout<<"Moves Left : "<<player.getMoves() <<" | Undos Left : "<<player.getUndos()<<endl;
-            grid.display();
+            cout<<"| | | MODE : "<<mode<<"| | |\n";
+            cout<<"\nMoves Left : "<<player.getMoves() <<" | Undos Left : "<<player.getUndos()<<endl;
+            cout<<"Have Key : "<<boolalpha<<player.haveKey()<<endl;
+            cout<<"Score : "<<player.getScore()<<endl;
+            grid.displayLabels();
             cout<<"Move WASD or Undo(U) : ";
             char d;
             cin>>d;
-            if(!player.move(grid , d)){
-                cout<<"invalid Move !" <<endl;
-            }
-            
-            if(player.getMoves() <= 0){
-                gameOver("You have no moves left :(");
-            }
-            if(grid.getValue(player.getX() , player.getY()) == 'B'){
-                gameOver("You stepped on a bomb LOL xD");
-            }
-
-            if(grid.getValue(player.getX() , player.getY()) == 'D' && player.haveKey()){
-                gameOver("You found the door and escaped :D");
-            }
+            player.move(grid , d);
         }
     }
 
@@ -120,7 +106,6 @@ int main(){
     cout<<"Enter game mode :";
     string mode;
     getline(cin,mode);
-    cout<<"\n------------------------------------\n";
 
     int rows = 15;
     int cols = 15;
