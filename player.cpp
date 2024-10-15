@@ -9,6 +9,7 @@ using namespace std;
             this->hasKey = false;
             label = 'P';
             score = 0;
+            keyX = keyY = doorX = doorY=-1;
     }
 
     int Player::getX(){
@@ -63,6 +64,7 @@ using namespace std;
                     cout<<"\nYou gained and extra Undo\n";
                     score+=2;
                     undos++;
+                    coinsCollected.add_coin(x,y);
                     grid.setValue(x , y , '.');
                 }
                 else if(currentCell == 'B'){
@@ -79,6 +81,7 @@ using namespace std;
 
                 grid.setLabel(x,y,label);
                 moves--;
+                //sense();
                 return true;
             }else{
                 cout<<"\n--Invalid Move--\n";
@@ -111,6 +114,7 @@ using namespace std;
         cout<<"GameOver : "<<reason<<endl;
         cout<<"Your Final Score : "<<score<<endl;
         cout<<"\n| | | Initial Grid | | |\n";
+        coinsCollected.display_coinHistory();
         initialGrid.displayValues();
         exit(0);
     }
@@ -120,6 +124,37 @@ using namespace std;
         cout<<"You Won!!\n";
         cout<<"Your Final Score : "<<score<<endl;
         cout<<"\n| | | Initial Grid | | |\n";
+        coinsCollected.display_coinHistory();
         initialGrid.displayValues();
         exit(0);
     }
+
+int calculateDistance(int x , int y , int targetX , int targetY){
+    return abs(x-targetX) + abs(y-targetY);
+}
+
+void Player::sense(){
+    int targetX = hasKey ? doorX : keyX;
+    int targetY = hasKey ? doorY : keyY;
+    
+    if(targetX == -1 || targetY==-1){
+        cout<<"Hint:\n";
+        return;
+    }
+    if (moveHistory.isEmpty()) {
+        cout << "Hint:\n";
+        return;
+    }
+    int currentDistance = calculateDistance(x,y,targetX,targetY);
+    int prevDistance = calculateDistance(moveHistory.peek().first , moveHistory.peek().second , targetX , targetY);
+    if(currentDistance < prevDistance){
+        cout<<"Hint : Moving Closer\n";
+    }
+    else if(currentDistance > prevDistance){
+        cout<<"Hint : Moving Away\n";
+    }
+    else{
+        cout<<"Hint : You are at same postion\n";
+    }
+
+}

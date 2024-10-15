@@ -66,6 +66,9 @@ void Grid::placeItems(char label){
     }while(getValue(x , y) != '.');
 
     setValue(x,y,label);
+    if(label == 'C'){
+        setLabel(x,y,'C');
+    }
 }
 
 

@@ -3,6 +3,8 @@
 #include "player.h"
 #include <ctime>
 #include <cstdlib>
+#include<thread>
+#include <chrono>
 
 using namespace std;
 
@@ -12,6 +14,18 @@ class Game{
     Grid grid;
     Player player;
     string mode;
+
+    void setKeyAndDoorPositions() {
+        for (int i = 0; i < grid.getRows(); i++) {
+            for (int j = 0; j < grid.getCols(); j++) {
+                if (grid.getValue(i, j) == 'K') {
+                    player.setKey(i, j);
+                } else if (grid.getValue(i, j) == 'D') {
+                    player.setDoor(i, j);
+                }
+            }
+        }
+    }
 
     int minimumMoves(int px, int py){
         int keyX = -1;
@@ -67,7 +81,23 @@ class Game{
         }
 
         player = Player(player.getX() , player.getY() , totalMoves , grid);
+        setKeyAndDoorPositions();
         player.setUndos(undos);
+    }
+
+    void replaceCoins(){
+        while(true){
+            this_thread::sleep_for(chrono::seconds(10));
+            for(int i=0;i<grid.getRows();i++){
+                for(int j=0;j<grid.getCols();j++){
+                    if(grid.getValue(i,j) == 'C'){
+                        grid.setValue(i,j,'.');
+                        grid.setLabel(i,j,'.');
+                        grid.placeItems('C');
+                    }
+                }
+            }
+        }
     }
 
     public:
@@ -81,11 +111,16 @@ class Game{
         grid.setLabel(randomX , randomY , 'P');
         player = Player(randomX , randomY, 0 , grid);
         setPlayerMovesandUndos();
+
+        thread coinReplacer(&Game::replaceCoins , this);
+        coinReplacer.detach();
+
         while(true){
-            cout<<"| | | MODE : "<<mode<<"| | |\n";
+            cout<<"| | | MODE : "<<mode<<" | | |\n";
             cout<<"\nMoves Left : "<<player.getMoves() <<" | Undos Left : "<<player.getUndos()<<endl;
             cout<<"Have Key : "<<boolalpha<<player.haveKey()<<endl;
             cout<<"Score : "<<player.getScore()<<endl;
+            player.sense();
             grid.displayLabels();
             cout<<"Move WASD or Undo(U) : ";
             char d;

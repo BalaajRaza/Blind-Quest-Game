@@ -4,6 +4,7 @@
 #include <iostream>
 #include <utility>
 #include "grid.h"
+#include "coins.h"
 using namespace std;
 
 class node{
@@ -69,6 +70,9 @@ class Player{
     char label;
     stack moveHistory;
     Grid initialGrid;
+    coin_history coinsCollected;
+    int keyX , keyY;
+    int doorX, doorY;
 
     public:
     Player(int x , int y, int moves , const Grid& grid);
@@ -84,6 +88,15 @@ class Player{
     void gameOver(string reason);
     void gameWin();
     int getScore(){return score;}
+    void setKey(int kx , int ky){
+        keyX = kx;
+        keyY = ky;
+    }
+    void setDoor(int dx, int dy){
+        doorX = dx;
+        doorY = dy;
+    }
+    void sense();
 
     
 };
