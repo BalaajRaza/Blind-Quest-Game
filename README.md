@@ -60,7 +60,7 @@ You are lost in a dangerous dark place and you have to escape alive. But the exi
         ./game
         ```
 
-     - **Using Visual Studio Community**
+   - **Using Visual Studio Community**
        1. Create a new empty C++ projecy
        2. Copy the game files from the cloned repo
        3. In VS Community look for SourceFiles in Solution Explorer
