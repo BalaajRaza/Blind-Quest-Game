@@ -69,11 +69,14 @@ using namespace std;
                 }
                 else if(currentCell == 'B'){
                     grid.setValue(x , y , '.');
+                    grid.setLabel(x,y,label);
                     gameOver("You stepped on a bomb LOLxD");
                     return false;
                 }
                 else if(currentCell == 'D'){
                     if(hasKey){
+                        grid.setValue(x , y , '.');
+                        grid.setLabel(x,y,label);
                         gameWin();
                         return false;
                     }
