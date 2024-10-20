@@ -78,6 +78,7 @@ You are lost in a dangerous dark place and you have to escape alive. But the exi
   7.  Trying to move through boundries or moving into door without key are invalid moves and won't consume your moves
 
 ### Game in Action
+(have to add screenshots here)
 ![Game Start]
 
 ![Hint]
