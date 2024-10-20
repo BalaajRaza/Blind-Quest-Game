@@ -33,6 +33,21 @@ class Grid{
     int rows;
     int cols;
     void copyGrid(const Grid& other);
+
+    void deletGrid() {
+    Node* currentRowHead = head;
+    while (currentRowHead != NULL) {
+        Node* current = currentRowHead;
+        currentRowHead = currentRowHead->down;
+
+        while (current != NULL) {
+            Node* nextNode = current->right;
+            delete current;
+            current = nextNode;
+        }
+    }
+    
+    }
     public:
 
     Grid(int r , int c);
