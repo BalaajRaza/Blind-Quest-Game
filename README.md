@@ -8,34 +8,40 @@ You are lost in a dangerous dark place and you have to escape alive. But the exi
 - Sensing Ability that tells you whether you are going in right direction
 - Bombs in your way to make game more challenging
 - Initial game state and coins collected are displayed at last
+- Use PDCurses for seamless display
 
 ## How to Run the Game
 ### Prerequisites
 - A C++ compiler (e.g., g++, clang++)
-- Terminal (Linux and Windows)
-- Visual Studio Code (Linux and Windows)
-- Visual Studio Community (Windows)
+- PDCurses Library
+- Terminal (Windows Only)
+- Visual Studio Code (Windows Only)
+- Visual Studio Community (Windows Only)
 
 ### Instructions
 1. **Download and setup a C++ compiler using MINGW**
    - Refer to this site to setup MINGW : https://ghost-together.medium.com/how-to-install-mingw-gcc-g-compiler-on-windows-f7c805747a00
-2. **Clone Repository**
+
+2. **Setup PDCurses**
+   - Download and install PDCurses 3.9 on your system.
+    
+3. **Clone Repository**
    - Using Github Desktop(Windows):
      1. Open Github Desktop
      2. Click on File in left top corner
      3. Select URL and paste the URL : https://github.com/BalaajRaza/Blind-Quest-Game
      4. Click Clone
         
-    - Using Git
+    - Using Git : write this command in terminal 
       ```bash
        git clone https://github.com/BalaajRaza/Blind-Quest-Game.git
        cd Blind-Quest-Game
       ```
-3. **Open the Project in Your Preferred IDE**
+4. **Open the Project in Your Preferred IDE**
    - Open Visual Studio Code or Visual Studio Community
    - Open the folder containing the cloned repository
 
-4. **Build and Run the Game**
+5. **Build and Run the Game**
    - **Using Terminal**
      1. Go in to your repository folder
      2. Right click and open a new terminal
@@ -78,18 +84,29 @@ You are lost in a dangerous dark place and you have to escape alive. But the exi
   7.  Trying to move through boundries or moving into door without key are invalid moves and won't consume your moves
 
 ### Game in Action
-(have to add screenshots here)
-![Game Start]
+1. **Game Start**
+   
+![Game Start](Screenshots/gamestart.png)
 
-![Hint]
+2. **Hints**
+   
+![Hint](Screenshots/hint.png)
 
-![Key Status]
+3. **Key Status**
+   
+![Key Status](Screenshots/keycollected.png)
 
-![Coins changed positions]
+4. **Coins Change Positions**
+   
+![Coins changed positions](Screenshots/coins_change.png)
 
-![Game Win]
+5. **Game Win**
+   
+![Game Win](Screenshots/gamewon.png)
 
-![Game Over]
+6. **Game Lose**
+   
+![Game Over](Screenshots/gameover.png)
 
 ## Libraries
  - curses.h(PDCurses) is used in this to display the game seamlessly.
